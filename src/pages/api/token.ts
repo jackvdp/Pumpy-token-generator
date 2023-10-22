@@ -5,16 +5,21 @@ type Token = {
   amToken: string
 }
 
+type ErrorResponse = {
+  error: string
+}
+
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Token>
+  res: NextApiResponse<Token | ErrorResponse>
 ) {
   const token = process.env.AM_TOKEN as string;
 
   if (!token) {
-    res.status(500).json({ amToken: 'Token not found' });
+    res.status(500).json({ error: 'Token not found' });
     return;
   }
 
   res.status(200).json({ amToken: token });
 }
+
