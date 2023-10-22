@@ -1,5 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import type { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiResponse } from 'next'
 
 type Token = {
   amToken: string
@@ -8,5 +8,6 @@ type Token = {
 export default function handler(
   res: NextApiResponse<Token>
 ) {
-  res.status(200).json({ amToken: 'John Doe' })
+  const token = process.env.AM_TOKEN
+  res.status(200).json({ amToken: token || "No data" })
 }
