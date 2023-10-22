@@ -20,6 +20,7 @@ export default function handler(
     return;
   }
 
+  res.setHeader('Cache-Control', 'max-age=86400')
   res.status(200).json({ amToken: token });
 }
 
