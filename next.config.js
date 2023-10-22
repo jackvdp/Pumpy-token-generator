@@ -4,3 +4,9 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
+module.exports = {
+  env: {
+    AM_TOKEN: process.env.AM_TOKEN,
+  },
+};
