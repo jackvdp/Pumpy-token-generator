@@ -1,12 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-}
-
-module.exports = nextConfig
 
 module.exports = {
+  reactStrictMode: true,
   env: {
-    AM_TOKEN: process.env.AM_TOKEN,
+    AM_TOKEN: process.env.AM_TOKEN
   },
 };
