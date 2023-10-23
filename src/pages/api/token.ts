@@ -10,7 +10,7 @@ export type ErrorResponse = {
   error: string
 }
 
-export function handler(
+export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Token | ErrorResponse>
 ) {
