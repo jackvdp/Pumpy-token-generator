@@ -1,15 +1,16 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import jwt from 'jsonwebtoken'
 
-type Token = {
+export type Token = {
   amToken: string
 }
 
-type ErrorResponse = {
+export type ErrorResponse = {
   error: string
 }
 
-export default function handler(
+export function handler(
   req: NextApiRequest,
   res: NextApiResponse<Token | ErrorResponse>
 ) {
@@ -20,7 +21,31 @@ export default function handler(
     return;
   }
 
-  res.setHeader('Cache-Control', 'max-age=86400')
+  let maxAge = getCacheTime(token)
+
+  if (maxAge === null) {
+    res.status(500).json({ error: 'Invalid token format' });
+    return;
+  }
+
+  if (maxAge <= 0) {
+    res.status(401).json({ error: 'Token has expired' });
+    return;
+  }
+
+  res.setHeader('Cache-Control', `max-age=${maxAge}`); // Cache is set until exactly at time of expiry
   res.status(200).json({ amToken: token });
+}
+
+export function getCacheTime(jwtToken: string): number | null  {
+  const decodedToken = jwt.decode(jwtToken) as { exp?: number };
+
+  if (!decodedToken || !decodedToken.exp) {
+    return null
+  }
+
+  const currentTimeInSeconds = Math.floor(Date.now() / 1000);
+  const maxAge = decodedToken.exp - currentTimeInSeconds
+  return maxAge
 }
 
