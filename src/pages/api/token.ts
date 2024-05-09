@@ -29,11 +29,11 @@ export default function handler(
   }
 
   if (maxAge <= 0) {
-    res.status(401).json({ error: 'Token has expired' });
+    res.status(401).json({ error: 'Token has expired ' + token });
     return;
   }
 
-  res.setHeader('Cache-Control', `max-age=${maxAge}`); // Cache is set until exactly at time of expiry
+  res.setHeader('Cache-Control', `max-age=${maxAge}`);
   res.status(200).json({ amToken: token });
 }
 
